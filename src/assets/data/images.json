@@ -1,12 +1,8 @@
 [
-  { "id": "img1", "title": "Default 1", "description": "A placeholder image used for testing.", "filename": "default.jpg" },
-  { "id": "img2", "title": "Default 2", "description": "Another placeholder image.", "filename": "default.jpg" },
-  { "id": "img3", "title": "Default 3", "description": "Sample image for gallery.", "filename": "default.jpg" },
-  { "id": "img4", "title": "Default 4", "description": "A generic image.", "filename": "default.jpg" },
-  { "id": "img5", "title": "Default 5", "description": "Fifth placeholder image.", "filename": "default.jpg" },
-  { "id": "img6", "title": "Default 6", "description": "Vacation sample image.", "filename": "default.jpg" },
-  { "id": "img7", "title": "Default 7", "description": "Image for showcase.", "filename": "default.jpg" },
-  { "id": "img8", "title": "Default 8", "description": "Image used to test scrolling.", "filename": "default.jpg" },
-  { "id": "img9", "title": "Default 9", "description": "Another sample.", "filename": "default.jpg" },
-  { "id": "img10", "title": "Default 10", "description": "Tenth placeholder image.", "filename": "default.jpg" }
+  {
+    "id": "nature1",
+    "title": "Sunset",
+    "description": "A beautiful sunset over the hills.",
+    "filename": "Sunset.jpg"
+  }
 ]

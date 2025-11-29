@@ -1,3 +1,31 @@
+// ...existing code...
+
+@Injectable()
+export class ImageService {
+  // ...existing code...
+
+  /**
+   * Move an image to a new showcase, removing it from all others and persisting the change.
+   */
+  public async moveImageToShowcase(imageId: string, showcaseId: string) {
+    // Remove image from all showcases
+    const showcases = this.showcases$.value;
+    for (const s of showcases) {
+      if (s.images) {
+        s.images = s.images.filter((img: any) => img.id !== imageId);
+        await this.db.put('showcases', { id: s.id, title: s.title, images: s.images.map((img: any) => img.id) });
+      }
+    }
+    // Add image to target showcase
+    const target = showcases.find(s => s.id === showcaseId);
+    if (target) {
+      target.images = target.images || [];
+      target.images.unshift({ id: imageId });
+      await this.db.put('showcases', { id: target.id, title: target.title, images: target.images.map((img: any) => img.id) });
+    }
+    this.showcases$.next(showcases);
+    await this._loadFromDbToMemory();
+  }
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
