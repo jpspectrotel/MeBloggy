@@ -1,0 +1,4 @@
+.brand { font-weight: 600; font-size: 18px; color: white; }
+.spacer { flex: 1 1 auto; }
+.brand-text { cursor: pointer; }
+.avatar-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }

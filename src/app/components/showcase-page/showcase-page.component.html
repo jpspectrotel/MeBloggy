@@ -1,0 +1,29 @@
+<div class="showcase-page-container">
+  <mat-card class="showcase-card showcase-main">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image">
+        <ng-container *ngIf="imageService.avatar$ | async as avatar">
+          <img [src]="avatar.src" class="card-avatar" />
+        </ng-container>
+      </div>
+      <mat-card-title>{{featuredImage?.title || (showcase?.title)}}</mat-card-title>
+      <mat-card-subtitle>{{featuredImage?.description}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="featuredImage?.blobSrc || featuredImage?.assetSrc || featuredImage?.src" alt="featured" (click)="openDialog()" class="main-showcase" />
+    <mat-card-content>
+      <p *ngIf="featuredImage?.description">{{featuredImage?.description}}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="showcase" class="showcase-grid">
+    <ng-container *ngFor="let img of showcase.images">
+      <mat-card class="grid-card" (click)="setFeatured(img)">
+        <mat-card-header>
+          <mat-card-title>{{img.title}}</mat-card-title>
+          <mat-card-subtitle>{{img.description}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image class="grid-image" [src]="img.blobSrc || img.assetSrc || img.src" [alt]="img.title" />
+      </mat-card>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schematics.angular.io/schema.json",
+  "version": 1,
+  "projects": {
+    "mebloggy": {
+      "root": "",
+      "projectType": "application",
+      "sourceRoot": "src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/mebloggy",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "mebloggy:build"
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "mebloggy"
+}

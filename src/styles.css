@@ -1,0 +1,80 @@
+/* Global styles */
+html, body, app-root, #root {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, Arial, sans-serif;
+}
+
+/* Material theme (prebuilt) import - requires @angular/material to be installed */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+mat-toolbar.mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.main-showcase {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.showcase-card {
+  padding: 8px;
+}
+
+.small-thumb {
+  width: 150px; /* wider to fill more of the horizontal showcase */
+  height: 96px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin: 3px; /* reduce spacing between thumbnails */
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 120ms ease-in-out, border-color 120ms ease-in-out;
+  flex: 0 0 auto; /* don't shrink or grow in the horizontal scrolling list */
+}
+.small-thumb:hover {
+  transform: scale(1.04);
+  border-color: rgba(0,0,0,0.08);
+}
+.card-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+
+.horizontal-row {
+  display: flex;
+  overflow-x: auto;
+  flex-direction: row;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+  gap: 6px; /* small gap between items */
+  align-items: center;
+}
+
+.thumb-item { display: inline-flex; flex-direction: column; align-items: center; margin: 3px; }
+.thumb-caption { font-size: 11px; color: #444; max-width: 140px; text-align: center; display:none; }
+
+.showcase-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.showcase-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.grid-image {
+  width: calc(100% / 6 - 6px);
+  height: 80px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .grid-image { width: calc(50% - 6px); }
+  .small-thumb { width: 110px; height: 80px; }
+}

@@ -1,0 +1,4 @@
+[
+  { "id": "s1", "title": "Favorites", "images": [{ "id": "img1" }, { "id": "img2" }, { "id": "img3" }, { "id": "img4" }, { "id": "img5" }] },
+  { "id": "s2", "title": "Vacation", "images": [{ "id": "img6" }, { "id": "img7" }, { "id": "img8" }, { "id": "img9" }, { "id": "img10" }] }
+]

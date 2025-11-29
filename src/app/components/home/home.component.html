@@ -1,0 +1,28 @@
+<div class="home-container">
+  <mat-card class="showcase-card showcase-main">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image">
+        <ng-container *ngIf="imageService.avatar$ | async as avatar">
+          <img [src]="avatar.src" class="card-avatar" />
+        </ng-container>
+      </div>
+      <mat-card-title>{{featuredImage?.title || 'Featured'}}</mat-card-title>
+      <mat-card-subtitle>{{featuredImage?.description}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="featuredImage?.blobSrc || featuredImage?.assetSrc || featuredImage?.src" alt="featured" (click)="openEditDialog()" class="main-showcase" />
+    <mat-card-content>
+      <p *ngIf="featuredImage?.description">{{featuredImage?.description}}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngFor="let showcase of showcases" class="showcase-section">
+    <mat-card class="showcase-card">
+      <div class="showcase-title" (click)="onSectionTitleClick(showcase)">{{showcase.title}}</div>
+      <div class="horizontal-row">
+        <ng-container *ngFor="let img of showcase.images">
+            <img class="small-thumb" [src]="img.blobSrc || img.assetSrc || img.src" [alt]="img.title" (click)="onThumbClick(img)" />
+          </ng-container>
+      </div>
+    </mat-card>
+  </div>
+</div>

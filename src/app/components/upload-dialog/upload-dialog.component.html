@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Upload Image</h2>
+<mat-dialog-content>
+  <p>Select target showcase:</p>
+  <mat-form-field style="width:100%">
+    <mat-select [(value)]="selectedShowcase" (selectionChange)="onSelectChange($event.value)">
+      <mat-option *ngFor="let s of showcases" [value]="s.id">{{s.title}}</mat-option>
+      <mat-option [value]="'__create__'">Create new...</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div *ngIf="creatingNew || selectedShowcase === '__create__'" style="margin-top:6px;">
+    <mat-form-field style="width:100%">
+      <mat-label>New showcase name</mat-label>
+      <input matInput [(ngModel)]="newShowcaseName" (input)="creatingNew = !!newShowcaseName" />
+    </mat-form-field>
+  </div>
+
+  <mat-form-field style="width:100%; margin-top: 10px;">
+    <mat-label>Image Title</mat-label>
+    <input matInput [(ngModel)]="data.title" />
+  </mat-form-field>
+
+  <mat-form-field style="width:100%; margin-top: 8px;">
+    <mat-label>Description</mat-label>
+    <textarea matInput rows="3" [(ngModel)]="data.description"></textarea>
+  </mat-form-field>
+
+  <div *ngIf="data?.file">
+    <p>File: {{data.file.name}}</p>
+    <img *ngIf="data.preview" [src]="data.preview" alt="preview" style="max-width:100%; height:auto; border-radius:8px;" />
+  </div>
+</mat-dialog-content>
+  <mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="confirm()" [disabled]="!data?.file || (selectedShowcase === '__create__' && !newShowcaseName)">Upload</button>
+</mat-dialog-actions>
