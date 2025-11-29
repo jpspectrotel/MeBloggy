@@ -17,6 +17,7 @@
   <mat-form-field style="width:100%; margin-top: 10px;">
     <mat-label>Image Title</mat-label>
     <input matInput [(ngModel)]="data.title" />
+    <mat-hint *ngIf="data?.file && data.title === data.file.name" style="color: red;">Please enter a real image title.</mat-hint>
   </mat-form-field>
 
   <mat-form-field style="width:100%; margin-top: 8px;">
@@ -31,5 +32,5 @@
 </mat-dialog-content>
   <mat-dialog-actions align="end">
   <button mat-button (click)="cancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="confirm()" [disabled]="!data?.file || (selectedShowcase === '__create__' && !newShowcaseName)">Upload</button>
+  <button mat-raised-button color="primary" (click)="confirm()" [disabled]="!data?.file || (selectedShowcase === '__create__' && !newShowcaseName) || (data?.file && data.title === data.file.name)">Upload</button>
 </mat-dialog-actions>

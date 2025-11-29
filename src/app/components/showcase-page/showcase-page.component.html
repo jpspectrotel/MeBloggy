@@ -20,7 +20,7 @@
           </button>
         </ng-template>
       </mat-card-title>
-      <mat-card-subtitle>{{featuredImage?.description}}</mat-card-subtitle>
+      <!-- Subtitle and mat-card-subtitle removed as requested -->
     </mat-card-header>
     <img mat-card-image [src]="featuredImage?.blobSrc || featuredImage?.assetSrc || featuredImage?.src" alt="featured" (click)="openDialog()" class="main-showcase" />
     <mat-card-content>

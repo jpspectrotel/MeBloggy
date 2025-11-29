@@ -1,7 +1,8 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ImageService } from '../../services/image.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-image-modal',
@@ -16,15 +17,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
         <mat-card-title>
           <mat-form-field appearance="fill">
             <mat-label>Title</mat-label>
-            <input matInput [(ngModel)]="title" />
+            <input matInput [(ngModel)]="title" #titleInput />
           </mat-form-field>
         </mat-card-title>
-        <mat-card-subtitle>
-          <mat-form-field appearance="fill">
-            <mat-label>Subtitle</mat-label>
-            <input matInput [(ngModel)]="description" />
-          </mat-form-field>
-        </mat-card-subtitle>
+        <!-- Subtitle edit control removed -->
       </mat-card-header>
       <img mat-card-image [src]="data.image?.blobSrc || data.image?.assetSrc || data.image?.src" alt="image" />
       <mat-card-content>
@@ -45,12 +41,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     </mat-card>
   `
 })
-export class ImageModalComponent {
+
+export class ImageModalComponent implements AfterViewInit {
   public title: string = '';
   public description: string = '';
+  @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<ImageModalComponent>, public service: ImageService, private snackBar: MatSnackBar) {
     this.title = data?.image?.title || '';
     this.description = data?.image?.description || '';
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (this.titleInput) {
+        this.titleInput.nativeElement.select();
+      }
+    }, 0);
   }
   onClose() { this.dialogRef.close(); }
   async onDelete() {

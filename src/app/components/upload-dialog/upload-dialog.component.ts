@@ -22,6 +22,7 @@ export class UploadDialogComponent implements OnInit {
     if (this.data) {
       this.data.title = this.data.title || (this.data.file && this.data.file.name) || '';
       this.data.description = this.data.description || '';
+      this.data.isDefaultTitle = this.data.file && this.data.title === this.data.file.name;
     }
   }
 
@@ -52,6 +53,11 @@ export class UploadDialogComponent implements OnInit {
 
   async confirm() {
     if (!this.data?.file) return;
+    // Prevent upload if title is just the file name
+    if (this.data.title === this.data.file.name) {
+      this.snackBar.open('Please enter a real image title, not just the file name.', 'OK', { duration: 3000 });
+      return;
+    }
     // If creating a new showcase, create it first
     let targetShowcase = this.selectedShowcase;
     if (this.selectedShowcase === '__create__' && this.newShowcaseName) {
