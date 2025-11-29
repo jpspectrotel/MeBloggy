@@ -2,7 +2,9 @@
 <mat-toolbar color="primary">
   <button mat-icon-button aria-label="Account" (click)="openAvatarDialog()" class="account-icon-btn">
     <ng-container *ngIf="imageService.avatar$ | async as avatar; else icon">
-      <img [src]="avatar.src" class="avatar-img" />
+      <ng-container *ngIf="avatar.src; else icon">
+        <img [src]="avatar.src" class="avatar-img" />
+      </ng-container>
     </ng-container>
     <ng-template #icon>
       <mat-icon>account_circle</mat-icon>
