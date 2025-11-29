@@ -48,7 +48,6 @@ mat-toolbar.mat-toolbar {
   flex-direction: row;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 6px;
-  gap: 6px; /* small gap between items */
   align-items: center;
 }
 

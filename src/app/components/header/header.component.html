@@ -1,4 +1,14 @@
+
 <mat-toolbar color="primary">
+  <button mat-icon-button aria-label="Account" (click)="openAvatarDialog()" class="account-icon-btn">
+    <ng-container *ngIf="imageService.avatar$ | async as avatar; else icon">
+      <img [src]="avatar.src" class="avatar-img" />
+    </ng-container>
+    <ng-template #icon>
+      <mat-icon>account_circle</mat-icon>
+    </ng-template>
+  </button>
+
   <button mat-button routerLink="/" class="brand">
     <span class="brand-text">meBloggy</span>
   </button>
@@ -9,13 +19,4 @@
     <mat-icon>cloud_upload</mat-icon>
   </button>
   <input #uploadFile type="file" accept="image/*" hidden (change)="onFileSelected($event)" />
-
-  <button mat-icon-button aria-label="Account" (click)="openAvatarDialog()">
-    <ng-container *ngIf="imageService.avatar$ | async as avatar; else icon">
-      <img [src]="avatar.src" class="avatar-img" />
-    </ng-container>
-    <ng-template #icon>
-      <mat-icon>account_circle</mat-icon>
-    </ng-template>
-  </button>
 </mat-toolbar>

@@ -8,7 +8,7 @@
       </div>
       <mat-card-title>
         <ng-container *ngIf="!editTitleMode; else editTitleTpl">
-          {{featuredImage?.title || (showcase?.title)}}
+          {{showcase?.title}}
           <button mat-icon-button (click)="enableEditTitle()" aria-label="Edit title" style="margin-left:8px;">
             <mat-icon>edit</mat-icon>
           </button>
