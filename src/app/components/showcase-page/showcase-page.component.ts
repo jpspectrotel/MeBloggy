@@ -12,6 +12,8 @@ import { ImageModalComponent } from '../image-modal/image-modal.component';
 export class ShowcasePageComponent implements OnInit {
   showcase: any = null;
   featuredImage: any = null;
+  editTitleMode: boolean = false;
+  editedTitle: string = '';
 
   constructor(private route: ActivatedRoute, public imageService: ImageService, private dialog: MatDialog) { }
 
@@ -37,6 +39,18 @@ export class ShowcasePageComponent implements OnInit {
     this.imageService.setFeaturedImage(img);
     // smooth scroll
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  enableEditTitle() {
+    this.editTitleMode = true;
+    this.editedTitle = this.showcase?.title || '';
+  }
+
+  saveTitle() {
+    if (this.editedTitle.trim()) {
+      this.showcase.title = this.editedTitle.trim();
+    }
+    this.editTitleMode = false;
   }
 
   openDialog() {
