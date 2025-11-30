@@ -2,7 +2,13 @@
   {
     "id": "nature1",
     "title": "Sunset",
-    "description": "A beautiful sunset over the hills.",
+    "description": "A beautiful sunset on the Shrewsbury River.",
     "filename": "Sunset.jpg"
+  },
+  {
+    "id": "science1",
+    "title": "Tesseract",
+    "description": "Welcome to the Fourth Dimension.",
+    "filename": "tesseract.gif"
   }
 ]

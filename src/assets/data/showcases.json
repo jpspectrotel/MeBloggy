@@ -2,6 +2,11 @@
   {
     "id": "s1",
     "title": "Nature",
-    "images": [ { "id": "nature1" } ]
+    "images": [ { "id": "nature1" }]
+  },
+  {
+    "id": "s2",
+    "title": "Science",
+    "images": [ { "id": "science1" } ]
   }
 ]
