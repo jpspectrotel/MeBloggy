@@ -15,13 +15,15 @@
   </mat-card>
 
   <div *ngFor="let showcase of showcases" class="showcase-section">
+    <div class="showcase-title showcase-title-above" (click)="onSectionTitleClick(showcase)">{{showcase.title}}</div>
+    <div class="showcase-separator"></div>
     <mat-card class="showcase-card">
-      <div class="showcase-title" (click)="onSectionTitleClick(showcase)">{{showcase.title}}</div>
-      <div class="horizontal-row">
+      <div class="horizontal-row large-thumbs-row">
         <ng-container *ngFor="let img of showcase.images">
-            <img class="small-thumb" [src]="img.blobSrc || img.assetSrc || img.src" [alt]="img.title" (click)="onThumbClick(img)" />
-          </ng-container>
+          <img class="large-thumb" [src]="img.blobSrc || img.assetSrc || img.src" [alt]="img.title" (click)="onThumbClick(img)" />
+        </ng-container>
       </div>
     </mat-card>
+    <div class="showcase-separator"></div>
   </div>
 </div>
