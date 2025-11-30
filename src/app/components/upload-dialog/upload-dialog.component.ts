@@ -20,9 +20,9 @@ export class UploadDialogComponent implements OnInit {
     this.service.showcases$.subscribe(s => { this.showcases = s || []; });
     // initialize defaults
     if (this.data) {
-      this.data.title = this.data.title || (this.data.file && this.data.file.name) || '';
-      this.data.description = this.data.description || '';
-      this.data.isDefaultTitle = this.data.file && this.data.title === this.data.file.name;
+      this.data.title = this.data.title || 'I ❤️ meBloggy!';
+      this.data.description = this.data.description || 'meBloggy is awesome 🚀!';
+      this.data.isDefaultTitle = false;
     }
   }
 
