@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 
 interface ImageObj { id: string; title: string; description?: string; filename?: string; src?: string; assetSrc?: string; blobSrc?: string }
-interface ShowcaseObj { id: string; title: string; images?: ImageObj[] }
+interface ShowcaseObj { id: string; title: string; images?: ImageObj[]; visible?: boolean }
 
 interface MeBloggyDB extends DBSchema {
   images: {
@@ -13,31 +13,35 @@ interface MeBloggyDB extends DBSchema {
   }
   showcases: {
     key: string;
-    value: { id: string; title: string; images: string[] }
+    value: { id: string; title: string; images: string[]; visible?: boolean }
   }
   avatars: {
     key: string;
     value: { key: string; id: string; blob: Blob }
   }
+  // showcaseVisibility store removed
 }
+
 
 @Injectable()
 export class ImageService {
   
-    public showcaseVisibility$ = new BehaviorSubject<{[id: string]: boolean}>(ImageService.loadShowcaseVisibility());
+    public showcaseVisibility$ = new BehaviorSubject<{[id: string]: boolean}>({});
 
-    private static loadShowcaseVisibility(): {[id: string]: boolean} {
-      try {
-        const raw = localStorage.getItem('mebloggy.showcaseVisibility');
-        if (raw) return JSON.parse(raw);
-      } catch {}
-      return {};
-    }
-
-    private saveShowcaseVisibility(vis: {[id: string]: boolean}) {
-      try {
-        localStorage.setItem('mebloggy.showcaseVisibility', JSON.stringify(vis));
-      } catch {}
+    // Update showcase visibility in DB and in-memory
+    public async setShowcaseVisibility(id: string, visible: boolean) {
+      if (!this.db) await this.openDb();
+      const showcase = await this.db.get('showcases', id);
+      if (showcase) {
+        showcase.visible = visible;
+        await this.db.put('showcases', showcase);
+        // update in-memory
+        const shows = this.showcases$.value.map(s => s.id === id ? { ...s, visible } : s);
+        this.showcases$.next(shows);
+        // update BehaviorSubject map
+        const visMap = { ...this.showcaseVisibility$.value, [id]: visible };
+        this.showcaseVisibility$.next(visMap);
+      }
     }
   // ...existing code...
   /**
@@ -62,6 +66,9 @@ export class ImageService {
   private _currentAvatarUrl: string | null = null;
 
   constructor(private http: HttpClient) {
+    // Persist showcaseVisibility on change
+    this.showcaseVisibility$.subscribe(vis => {
+    });
     this.init();
   }
 
@@ -93,11 +100,11 @@ export class ImageService {
         // seed showcases into DB and in-memory
         for (const s of showcasesJson) {
           const ids = (s.images || []).map(i => i.id ? i.id : (i as any).id);
-          await this.db.put('showcases', { id: s.id, title: s.title, images: ids });
+          await this.db.put('showcases', { id: s.id, title: s.title, images: ids, visible: true });
         }
 
-          // Now load from DB to memory
-          await this._loadFromDbToMemory();
+        // Now load from DB to memory
+        await this._loadFromDbToMemory();
       } else {
         // Ensure if there are images but no showcases, create a default showcase
         if (dbImages.length > 0 && dbShowcases.length === 0) {
@@ -155,8 +162,8 @@ export class ImageService {
   }
 
   private async openDb() {
-    // bump DB version to 2 to allow upgrades that add new stores (showcases)
-    this.db = await openDB<MeBloggyDB>('mebloggy-db', 2, {
+    // bump DB version to 3 to allow upgrades that add new fields (visible)
+    this.db = await openDB<MeBloggyDB>('mebloggy-db', 3, {
       upgrade(db) {
         if (!db.objectStoreNames.contains('images')) db.createObjectStore('images', { keyPath: 'id' });
         if (!db.objectStoreNames.contains('showcases')) db.createObjectStore('showcases', { keyPath: 'id' });
@@ -217,25 +224,28 @@ export class ImageService {
     }
 
     const showcases: ShowcaseObj[] = [];
+    const visMap: {[id: string]: boolean} = {};
     for (const s of showcasesDb) {
       const images: ImageObj[] = (s.images || []).map(id => imgMap.get(id)).filter(Boolean) as ImageObj[];
-      showcases.push({ id: s.id, title: s.title, images });
+      let visible = typeof s.visible === 'boolean' ? s.visible : true;
+      // If visible field is missing, set and persist
+      if (typeof s.visible !== 'boolean') {
+        s.visible = true;
+        await this.db.put('showcases', s);
+      }
+      showcases.push({ id: s.id, title: s.title, images, visible });
+      visMap[s.id] = visible;
     }
 
     this.showcases$.next(showcases);
-
-    // Initialize showcaseVisibility$ if empty
-    if (Object.keys(this.showcaseVisibility$.value).length === 0 && showcases.length > 0) {
-      const vis: {[id: string]: boolean} = {};
-      showcases.forEach(s => { vis[s.id] = true; });
-      this.showcaseVisibility$.next(vis);
-    }
+    this.showcaseVisibility$.next(visMap);
 
     // set a default featured if none
     if (!this.featured$.value && showcases.length > 0) {
       const firstShowcase = showcases[0];
       if (firstShowcase.images && firstShowcase.images.length) this.setFeaturedImage(firstShowcase.images[0]);
     }
+    // No longer needed: showcaseVisibility is now stored per showcase
   }
 
   public async getShowcases() {

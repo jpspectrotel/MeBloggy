@@ -92,9 +92,8 @@ export class AccountDialogComponent implements OnInit, OnDestroy {
   }
 
   toggleShowcaseVisibility(id: string) {
-    const vis = { ...this.showcaseVisibility };
-    vis[id] = !vis[id];
-    this.service.showcaseVisibility$.next(vis);
+    const newVisible = !this.showcaseVisibility[id];
+    this.service.setShowcaseVisibility(id, newVisible);
   }
 
   close() { this.dialogRef.close(false); }
