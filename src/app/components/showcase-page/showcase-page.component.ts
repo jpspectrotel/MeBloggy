@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ActivatedRoute } from '@angular/router';
 import { ImageService } from '../../services/image.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -60,5 +61,11 @@ export class ShowcasePageComponent implements OnInit {
         // service triggers updates via BehaviorSubject
       }
     });
+  }
+    onDrop(event: CdkDragDrop<any[]>) {
+    if (!this.showcase?.images) return;
+    moveItemInArray(this.showcase.images, event.previousIndex, event.currentIndex);
+    // Optionally persist the new order in the service
+    this.imageService.showcases$.next([...this.imageService.showcases$.value]);
   }
 }

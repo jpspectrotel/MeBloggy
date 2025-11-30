@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ImageService } from '../../services/image.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -58,5 +59,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (window.scrollY > 80) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  }
+    onShowcaseDrop(event: CdkDragDrop<any[]>) {
+    moveItemInArray(this.showcases, event.previousIndex, event.currentIndex);
+    // Persist new order in service
+    this.imageService.showcases$.next([...this.showcases]);
   }
 }

@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -50,6 +51,7 @@ import { AppRoutingModule } from './app-routing.module';
     , MatSnackBarModule
     , MatInputModule
     , FormsModule
+    , DragDropModule
   ],
   providers: [ImageService],
   bootstrap: [AppComponent]
