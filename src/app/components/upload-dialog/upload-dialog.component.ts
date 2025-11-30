@@ -13,17 +13,19 @@ export class UploadDialogComponent implements OnInit {
   public selectedShowcase: string | null = null;
   public creatingNew = false;
   public newShowcaseName = '';
+  public files: File[] = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<UploadDialogComponent>,
     private service: ImageService, private snackBar: MatSnackBar) {
     this.service.showcases$.subscribe(s => { this.showcases = s || []; });
     // initialize defaults
-    if (this.data) {
-      this.data.title = this.data.title || (this.data.file && this.data.file.name) || '';
-      this.data.description = this.data.description || '';
-      this.data.isDefaultTitle = this.data.file && this.data.title === this.data.file.name;
-    }
+    if (!this.data) this.data = {};
+    this.data.title = this.data.title || 'I ❤️ meBloggy!';
+    this.data.description = this.data.description || 'meBloggy is awesome 🚀!';
+    this.data.preview = this.data.preview || null;
+    this.data.isDefaultTitle = false;
+    this.files = this.data.files ? this.data.files : [];
   }
 
   ngOnInit() {
@@ -52,11 +54,13 @@ export class UploadDialogComponent implements OnInit {
   }
 
   async confirm() {
-    if (!this.data?.file) return;
-    // Prevent upload if title is just the file name
-    if (this.data.title === this.data.file.name) {
-      this.snackBar.open('Please enter a real image title, not just the file name.', 'OK', { duration: 3000 });
-      return;
+    if (!this.files || this.files.length === 0) return;
+    // Prevent upload if title is just the file name for any file
+    for (const file of this.files) {
+      if (this.data.title === file.name) {
+        this.snackBar.open('Please enter a real image title, not just the file name.', 'OK', { duration: 3000 });
+        return;
+      }
     }
     // If creating a new showcase, create it first
     let targetShowcase = this.selectedShowcase;
@@ -64,10 +68,12 @@ export class UploadDialogComponent implements OnInit {
       const newId = await this.service.createShowcase(this.newShowcaseName);
       if (newId) targetShowcase = newId;
     }
-    await this.service.addImageFromFile(this.data.file, targetShowcase, this.data.title, this.data.description);
+    for (const file of this.files) {
+      await this.service.addImageFromFile(file, targetShowcase, this.data.title, this.data.description);
+    }
     // persist last used showcase
     if (targetShowcase) localStorage.setItem('mebloggy.lastShowcase', targetShowcase);
-    this.snackBar.open('Image uploaded', 'OK', { duration: 2000 });
+    this.snackBar.open(`${this.files.length} image(s) uploaded`, 'OK', { duration: 2000 });
     // clear creatingNew
     this.creatingNew = false;
     this.newShowcaseName = '';
@@ -75,4 +81,29 @@ export class UploadDialogComponent implements OnInit {
   }
 
   cancel() { this.dialogRef.close(false); }
+  onFilesSelected(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      this.files = Array.from(event.target.files);
+      // Optionally, generate previews for the first image
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.data.preview = e.target.result;
+      };
+      reader.readAsDataURL(this.files[0]);
+    } else {
+      this.files = [];
+      this.data.preview = null;
+    }
+  }
+  get canUpload(): boolean {
+  return !(
+    this.files.length === 0 || 
+    (this.selectedShowcase === '__create__' && !this.newShowcaseName) ||
+    this.hasDuplicateFileName()
+  );
+  }
+
+  hasDuplicateFileName(): boolean {
+    return this.files.some(f => this.data.title === f.name);
+  }
 }

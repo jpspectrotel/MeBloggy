@@ -10,7 +10,7 @@
   <div *ngIf="creatingNew || selectedShowcase === '__create__'" style="margin-top:6px;">
     <mat-form-field style="width:100%">
       <mat-label>New showcase name</mat-label>
-      <input matInput [(ngModel)]="newShowcaseName" (input)="creatingNew = !!newShowcaseName" />
+      <input matInput [(ngModel)]="newShowcaseName" (input)="onNewShowcaseInput()" />
     </mat-form-field>
   </div>
 
@@ -25,12 +25,18 @@
     <textarea matInput rows="3" [(ngModel)]="data.description"></textarea>
   </mat-form-field>
 
-  <div *ngIf="data?.file">
-    <p>File: {{data.file.name}}</p>
-    <img *ngIf="data.preview" [src]="data.preview" alt="preview" style="max-width:100%; height:auto; border-radius:8px;" />
+  <div>
+    <input type="file" multiple (change)="onFilesSelected($event)" />
+    <div *ngIf="files.length > 0">
+      <p>Selected files:</p>
+      <ul>
+        <li *ngFor="let f of files">{{f.name}}</li>
+      </ul>
+      <img *ngIf="data.preview" [src]="data.preview" alt="preview" style="max-width:100%; height:auto; border-radius:8px;" />
+    </div>
   </div>
 </mat-dialog-content>
   <mat-dialog-actions align="end">
   <button mat-button (click)="cancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="confirm()" [disabled]="!data?.file || (selectedShowcase === '__create__' && !newShowcaseName) || (data?.file && data.title === data.file.name)">Upload</button>
+  <button mat-raised-button color="primary" (click)="confirm()" [disabled]="!canUpload">Upload</button>
 </mat-dialog-actions>

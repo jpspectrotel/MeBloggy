@@ -29,4 +29,8 @@ export class HeaderComponent {
       // nothing required, avatar$ will update via ImageService
     });
   }
+
+  openUploadDialog() {
+    this.dialog.open(UploadDialogComponent, { width: '80%' });
+  }
 }

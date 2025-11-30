@@ -17,8 +17,7 @@
 
   <span class="spacer"></span>
 
-  <button mat-icon-button aria-label="Upload" (click)="uploadFile.click()">
+  <button mat-icon-button aria-label="Upload" (click)="openUploadDialog()">
     <mat-icon>cloud_upload</mat-icon>
   </button>
-  <input #uploadFile type="file" accept="image/*" hidden (change)="onFileSelected($event)" />
 </mat-toolbar>
