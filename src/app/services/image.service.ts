@@ -23,6 +23,19 @@ interface MeBloggyDB extends DBSchema {
 
 @Injectable()
 export class ImageService {
+  // ...existing code...
+  /**
+   * Update the order of images in a showcase and persist to DB
+   */
+  async updateShowcaseImageOrder(showcaseId: string, imageIds: string[]) {
+    if (!this.db) await this.openDb();
+    const showcase = await this.db.get('showcases', showcaseId);
+    if (showcase) {
+      showcase.images = imageIds;
+      await this.db.put('showcases', showcase);
+      await this._loadFromDbToMemory();
+    }
+  }
   // toggle this to true to prefer using blob object URLs for images (default is false to use asset paths)
   public useBlobUrls = false;
   private db!: IDBPDatabase<MeBloggyDB>;

@@ -29,8 +29,8 @@
   </mat-card>
 
   <div *ngIf="showcase" class="showcase-grid" cdkDropList (cdkDropListDropped)="onDrop($event)">
-    <ng-container *ngFor="let img of showcase.images; let i = index" cdkDrag>
-      <mat-card class="grid-card" (click)="setFeatured(img)">
+    <ng-container *ngFor="let img of showcase.images; let i = index">
+      <mat-card class="grid-card" cdkDrag (click)="setFeatured(img)">
         <img mat-card-image class="grid-image" [src]="img.blobSrc || img.assetSrc || img.src" [alt]="img.title" />
       </mat-card>
     </ng-container>
