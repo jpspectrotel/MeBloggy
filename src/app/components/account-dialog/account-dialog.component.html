@@ -1,24 +1,32 @@
 <h2 mat-dialog-title>Account</h2>
 <mat-dialog-content>
-      <h3 style="margin-top:24px;">Showcase Visibility</h3>
-  <div *ngIf="showcases?.length; else noShowcases" class="showcase-list">
-    <div *ngFor="let showcase of showcases"
-         (click)="toggleShowcaseVisibility(showcase.id)"
-         [class.showcase-title]="true"
-         [class.active]="showcaseVisibility[showcase.id]"
-         [class.inactive]="!showcaseVisibility[showcase.id]">
-      {{ showcase.title }}
+    <div style="border: 1px solid #4e4c4c; padding:0 15px 7px 15px; margin-bottom:5px;">
+        <h3 style="margin-top:20px;">Showcase Visibility</h3>
+        <div *ngIf="showcases?.length; else noShowcases" class="showcase-list">
+            <div *ngFor="let showcase of showcases" (click)="toggleShowcaseVisibility(showcase.id)"
+                [class.showcase-title]="true" [class.active]="showcaseVisibility[showcase.id]"
+                [class.inactive]="!showcaseVisibility[showcase.id]">
+                {{ showcase.title }}
+            </div>
+        </div>
+        <ng-template #noShowcases>
+            <p>No showcases available.</p>
+        </ng-template>
     </div>
-  </div>
-  <ng-template #noShowcases>
-    <p>No showcases available.</p>
-  </ng-template>
-<h3 style="margin-top:24px;">Upload Avatar</h3>
-  <input type="file" accept="image/*" (change)="onFileSelected($event)" />
-  <div *ngIf="preview" style="margin-top:8px;text-align:center;"> <img [src]="preview" style="width:120px;height:120px;object-fit:cover;border-radius:50%" /></div>
+    <div style="border: 1px solid #4e4c4c; padding:0 15px 7px 15px;">
+        <h3 style="margin-top:20px;">Upload Avatar</h3>
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+        <div *ngIf="preview" style="margin-top:8px;text-align:center;"> <img [src]="preview"
+                style="width:120px;height:120px;object-fit:cover;border-radius:50%" /></div>
+        <div style="text-align:center; margin-top:16px;">
+            <button mat-raised-button color="primary" (click)="save()" [disabled]="!file || saving"
+                style="margin-right:8px;">Save Avatar</button>
+            <button mat-button *ngIf="service.avatar$ | async" (click)="onRemove()" style="margin-right:8px;">Remove
+                Avatar</button>
+        </div>
+    </div>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
-  <button mat-button (click)="close()">Cancel</button>
-  <button mat-button *ngIf="service.avatar$ | async" (click)="onRemove()">Remove</button>
-  <button mat-raised-button color="primary" (click)="save()" [disabled]="!file || saving">Save</button>
+    <button mat-raised-button color="primary" (click)="close()">Close</button>
 </mat-dialog-actions>
