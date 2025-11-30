@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadDialogComponent } from '../upload-dialog/upload-dialog.component';
-import { AvatarDialogComponent } from '../avatar-dialog/avatar-dialog.component';
+import { AccountDialogComponent } from "../account-dialog/account-dialog.component";
 import { ImageService } from '../../services/image.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class HeaderComponent {
   }
 
   openAvatarDialog() {
-    const ref = this.dialog.open(AvatarDialogComponent, { data: { preview: this.imageService.avatar$.value?.src }, width: '320px' });
+    const ref = this.dialog.open(AccountDialogComponent, { data: { preview: this.imageService.avatar$.value?.src }, width: '320px' });
     ref.afterClosed().subscribe(() => {
       // nothing required, avatar$ will update via ImageService
     });

@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Account</h2>
+<mat-dialog-content>
+      <h3 style="margin-top:24px;">Showcase Visibility</h3>
+  <div *ngIf="showcases?.length; else noShowcases" class="showcase-list">
+    <div *ngFor="let showcase of showcases"
+         (click)="toggleShowcaseSelection(showcase.id)"
+         [class.showcase-title]="true"
+         [class.active]="selectedShowcaseIds.has(showcase.id)"
+         [class.inactive]="!selectedShowcaseIds.has(showcase.id)">
+      {{ showcase.title }}
+    </div>
+  </div>
+  <ng-template #noShowcases>
+    <p>No showcases available.</p>
+  </ng-template>
+<h3 style="margin-top:24px;">Upload Avatar</h3>
+  <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+  <div *ngIf="preview" style="margin-top:8px;text-align:center;"> <img [src]="preview" style="width:120px;height:120px;object-fit:cover;border-radius:50%" /></div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-button *ngIf="service.avatar$ | async" (click)="onRemove()">Remove</button>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="!file || saving">Save</button>
+</mat-dialog-actions>

@@ -13,22 +13,39 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit, AfterViewInit {
   featuredImage: any = null;
   showcases: any[] = [];
+  private allShowcases: any[] = [];
 
   constructor(public imageService: ImageService, private dialog: MatDialog, private router: Router) { }
 
   ngOnInit(): void {
     // Subscribe to showcases updates
     this.imageService.showcases$.subscribe(v => {
-      this.showcases = v || [];
-      if (this.showcases.length) {
-        const firstShowcase = this.showcases[0];
-        if (firstShowcase.images && firstShowcase.images.length) {
-          this.setFeatured(firstShowcase.images[0]);
-        }
-      }
+      this.allShowcases = v || [];
+      this.filterShowcases();
+    });
+
+    // Subscribe to selected showcase IDs
+    this.imageService.selectedShowcaseIds$.subscribe(ids => {
+      this.filterShowcases();
     });
 
     this.imageService.featured$.subscribe(img => this.featuredImage = img);
+  }
+
+  filterShowcases() {
+    const selectedIds = this.imageService.selectedShowcaseIds$.value;
+    if (!selectedIds.length) {
+      this.showcases = this.allShowcases;
+    } else {
+      this.showcases = this.allShowcases.filter(s => selectedIds.includes(s.id));
+    }
+    // Optionally, update featured image if needed
+    if (this.showcases.length) {
+      const firstShowcase = this.showcases[0];
+      if (firstShowcase.images && firstShowcase.images.length) {
+        this.setFeatured(firstShowcase.images[0]);
+      }
+    }
   }
 
   ngAfterViewInit(): void {

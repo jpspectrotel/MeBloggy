@@ -23,6 +23,7 @@ interface MeBloggyDB extends DBSchema {
 
 @Injectable()
 export class ImageService {
+  public selectedShowcaseIds$ = new BehaviorSubject<string[]>([]);
   // ...existing code...
   /**
    * Update the order of images in a showcase and persist to DB

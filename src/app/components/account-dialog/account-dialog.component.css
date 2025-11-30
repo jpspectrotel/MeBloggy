@@ -1,0 +1,38 @@
+.account-dialog {
+  padding: 24px;
+  min-width: 300px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.account-dialog h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+.showcase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.showcase-title {
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s, color 0.2s, font-weight 0.2s;
+}
+.showcase-title.active {
+  color: #2ecc40;
+  font-weight: bold;
+  background: rgba(46, 204, 64, 0.08);
+}
+.showcase-title.inactive {
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: normal;
+  background: transparent;
+}
+

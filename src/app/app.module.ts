@@ -23,6 +23,7 @@ import { ShowcasePageComponent } from './components/showcase-page/showcase-page.
 import { ImageModalComponent } from './components/image-modal/image-modal.component';
 import { UploadDialogComponent } from './components/upload-dialog/upload-dialog.component';
 import { AvatarDialogComponent } from './components/avatar-dialog/avatar-dialog.component';
+import { AccountDialogComponent } from './components/account-dialog/account-dialog.component';
 import { ImageService } from './services/image.service';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -34,7 +35,8 @@ import { AppRoutingModule } from './app-routing.module';
     ShowcasePageComponent,
     ImageModalComponent,
     UploadDialogComponent,
-    AvatarDialogComponent
+    AvatarDialogComponent,
+    AccountDialogComponent
   ],
   imports: [
     BrowserModule,
