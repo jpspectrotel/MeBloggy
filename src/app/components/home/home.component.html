@@ -16,7 +16,7 @@
 
   <div cdkDropList (cdkDropListDropped)="onShowcaseDrop($event)">
     <div *ngFor="let showcase of showcases; let i = index" class="showcase-section" cdkDrag>
-      <div class="showcase-title showcase-title-above" (click)="onSectionTitleClick(showcase)">{{showcase.title}}</div>
+      <div class="showcase-title showcase-title-above" cdkDragHandle (click)="onSectionTitleClick(showcase)">{{showcase.title}}</div>
       <div class="showcase-separator"></div>
       <mat-card class="showcase-card">
         <div class="horizontal-row large-thumbs-row">
